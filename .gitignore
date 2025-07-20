@@ -35,9 +35,7 @@ coverage/
 .DS_Store
 
 # Project-specific files
-CLAUDE.md
-PLAN.MD
-mcp-config.json
+# These are now tracked in git for project documentation
 
 # Temporary files
 *.tmp

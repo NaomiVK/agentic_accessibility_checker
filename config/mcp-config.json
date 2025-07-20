@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-playwright"],
+      "env": {}
+    },
+    "accessibility-scanner": {
+      "command": "npx",
+      "args": ["-y", "mcp-accessibility-scanner"],
+      "env": {}
+    }
+  }
+}
