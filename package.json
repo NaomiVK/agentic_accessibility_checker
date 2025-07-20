@@ -1,0 +1,52 @@
+{
+  "name": "accessibility_test",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "npm run build && node dist/main-orchestrator.js",
+    "scan": "npm run build && node dist/main-orchestrator.js --input config/urls-to-test.json --workers 5",
+    "scan-bulk-only": "npm run build && node dist/main-orchestrator.js --skip-claude",
+    "scan-enhanced": "npm run build && node dist/enhanced-orchestrator.js --input config/urls-to-test.json --workers 5",
+    "scan-enhanced-learning": "npm run build && node dist/enhanced-orchestrator.js --input config/urls-to-test.json --workers 5 --learning-mode",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts tests/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts tests/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts tests/**/*.ts",
+    "format:check": "prettier --check src/**/*.ts tests/**/*.ts",
+    "qa": "npm run lint && npm run format:check && npm run test",
+    "prepush": "npm run qa && npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@anthropic-ai/claude-code": "^1.0.53",
+    "@anthropic-ai/sdk": "^0.56.0",
+    "@axe-core/playwright": "^4.10.2",
+    "@axe-core/puppeteer": "^4.10.2",
+    "@playwright/test": "^1.54.1",
+    "axe-core": "^4.10.3",
+    "commander": "^14.0.0",
+    "dotenv": "^17.2.0",
+    "puppeteer": "^24.14.0",
+    "xlsx": "^0.18.5"
+  },
+  "devDependencies": {
+    "@jest/globals": "^30.0.4",
+    "@types/dotenv": "^6.1.1",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.0.14",
+    "@typescript-eslint/eslint-plugin": "^8.37.0",
+    "@typescript-eslint/parser": "^8.37.0",
+    "eslint": "^9.31.0",
+    "eslint-config-prettier": "^10.1.5",
+    "jest": "^30.0.4",
+    "prettier": "^3.6.2",
+    "ts-jest": "^29.4.0",
+    "typescript": "^5.8.3"
+  }
+}

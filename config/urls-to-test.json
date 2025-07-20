@@ -1,0 +1,21 @@
+{
+  "urls": [
+    "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/registering-your-business/bro-register.html",
+    "https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/eligible-spin-offs.html",
+    "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-32300-your-tuition-education-textbook-amounts/recognized-educational-institutions-outside-canada/universities-higher-educational-institutions.html",
+    "https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/about-your-tax-return/tax-return/completing-a-tax-return/deductions-credits-expenses/line-22900-other-employment-expenses/work-space-home-expenses/who-claim/detailed-method.html",
+    "https://www.canada.ca/en/revenue-agency/services/tax/individuals/community-volunteer-income-tax-program/lend-a-hand-individuals/cvitp-learning-guide/video-gallery.html",
+    "https://www.canada.ca/fr/agence-revenu/services/formulaires-publications/publications.html",
+    "https://www.canada.ca/en/revenue-agency/services/forms-publications.html"    
+  ],
+  "config": {
+    "batchSize": 5,
+    "maxWorkers": 2,
+    "timeout": 45000,
+    "retryAttempts": 3,
+    "skipPatterns": [
+      "*/admin/*",
+      "*/api/*"
+    ]
+  }
+}
