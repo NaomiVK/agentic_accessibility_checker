@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, jest } from '@jest/globals';
-import { EnhancedDecisionAgent } from '../../src/agents/enhanced-decision-agent-fixed';
+import { describe, it, expect, beforeEach } from '@jest/globals';
+import { EnhancedDecisionAgent } from '../../src/agents/enhanced-decision-agent';
 import { PageScanResult, ViolationResult } from '../../src/types/accessibility-types';
 import { DecisionCategory } from '../../src/types/claude-types';
 
@@ -11,12 +11,12 @@ describe('EnhancedDecisionAgent', () => {
     // Clear any previous learning memory
     agent['learningMemory'] = {
       patternHistory: new Map(),
-      decisionOutcomes: [],
+      decisionOutcomes: new Map(),
       contextualPatterns: new Map()
     };
   });
 
-  describe('makeEnhancedDecision', () => {
+  describe('makeDecisionWithReasoning', () => {
     it('should categorize page with no violations as PASSED with 100% confidence', () => {
       const scanResult: PageScanResult = {
         url: 'https://example.com',
@@ -28,10 +28,10 @@ describe('EnhancedDecisionAgent', () => {
         scanDuration: 1000,
       };
 
-      const decision = agent.makeEnhancedDecision(scanResult);
+      const decision = agent.makeDecisionWithReasoning(scanResult);
 
-      expect(decision.decision).toBe('PASSED');
-      expect(decision.confidence).toBe(1.0);
+      expect(decision.category).toBe('PASSED');
+      expect(decision.reasoning.confidence).toBe(1.0);
       expect(decision.reasoning.factors).toHaveLength(1);
       expect(decision.reasoning.factors[0].description).toContain('No violations found');
     });
@@ -72,7 +72,7 @@ describe('EnhancedDecisionAgent', () => {
         scanDuration: 1000,
       };
 
-      const decision = agent.makeEnhancedDecision(scanResult);
+      const decision = agent.makeDecisionWithReasoning(scanResult);
 
       expect(decision.decision).toBe('CLAUDE_NEEDED');
       expect(decision.confidence).toBeGreaterThan(0.5);
@@ -100,7 +100,7 @@ describe('EnhancedDecisionAgent', () => {
         scanDuration: 1000,
       };
 
-      const decision = agent.makeEnhancedDecision(scanResult);
+      const decision = agent.makeDecisionWithReasoning(scanResult);
 
       expect(decision.decision).toBe('CRITICAL');
       expect(decision.reasoning.factors.some(f => f.impact === 'critical')).toBe(true);
@@ -138,7 +138,7 @@ describe('EnhancedDecisionAgent', () => {
         scanDuration: 1000,
       };
 
-      const decision = agent.makeEnhancedDecision(scanResult);
+      const decision = agent.makeDecisionWithReasoning(scanResult);
       const patterns = agent['detectComplexPatterns'](formViolations);
 
       expect(patterns).toContain('form-accessibility-issues');
@@ -176,7 +176,7 @@ describe('EnhancedDecisionAgent', () => {
         scanDuration: 1000,
       };
 
-      const decision = agent.makeEnhancedDecision(scanResult);
+      const decision = agent.makeDecisionWithReasoning(scanResult);
 
       // Should have learning insights based on history
       expect(decision.reasoning.learningInsights.length).toBeGreaterThan(0);

@@ -175,9 +175,9 @@ ${violationSummary}
 Please use the available MCP tools to perform a comprehensive accessibility analysis:
 
 ### 1. Initial Setup
-- Use \`mcp__playwright__browser_navigate\` to navigate to: ${pageData.url}
-- Take initial screenshot with \`mcp__playwright__browser_take_screenshot\`
-- Capture accessibility snapshot with \`mcp__playwright__browser_snapshot\`
+- Use \`browser_navigate\` to navigate to: ${pageData.url}
+- Take initial screenshot with \`browser_take_screenshot\`
+- Capture accessibility snapshot with \`browser_snapshot\`
 
 ### 2. Visual Inspection
 For each violation location:
@@ -298,8 +298,8 @@ CRITICAL: You MUST respond with ONLY valid JSON matching the exact format shown 
         mcpServers,
         // Allow Claude to use all playwright and accessibility-scanner tools
         allowedTools: [
-          'mcp__playwright__*',
-          'mcp__accessibility-scanner__*'
+          'browser_*',
+          'accessibility_*'
         ],
         maxTurns: 20, // Increased from 10 to allow more complex analyses
         permissionMode: 'bypassPermissions',
@@ -418,7 +418,7 @@ CRITICAL: You MUST respond with ONLY valid JSON matching the exact format shown 
       let claudeResult;
       try {
         claudeResult = JSON.parse(jsonStr);
-      } catch (parseError) {
+      } catch {
         // If JSON parsing fails, create a fallback response from the text
         console.warn('Failed to parse JSON, creating fallback response from text analysis');
         return this.createFallbackResponse(response, pageData);

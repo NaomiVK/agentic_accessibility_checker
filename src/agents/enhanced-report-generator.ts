@@ -330,7 +330,7 @@ export class EnhancedReportGenerator {
   /**
    * Helper methods
    */
-  private generateSummary(categorized: DecisionResult, claudeResults: AnalysisResult[]): any {
+  private generateSummary(categorized: DecisionResult, _claudeResults: AnalysisResult[]): any {
     const allPages = [
       ...categorized.passed,
       ...categorized.minorIssues,
@@ -401,7 +401,7 @@ export class EnhancedReportGenerator {
     return 'MINOR_ISSUES';
   }
 
-  private generateRecommendations(categorized: DecisionResult, claudeResults: AnalysisResult[]): string[] {
+  private generateRecommendations(categorized: DecisionResult, _claudeResults: AnalysisResult[]): string[] {
     const recommendations: string[] = [];
     
     if (categorized.critical.length > 0) {

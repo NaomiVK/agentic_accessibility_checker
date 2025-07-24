@@ -41,8 +41,36 @@ An intelligent multi-agent system that combines automated accessibility scanning
 **Decision Categories**:
 - `PASSED`: No violations found (100% confidence)
 - `MINOR_ISSUES`: Only auto-fixable violations
-- `CLAUDE_NEEDED`: Complex issues requiring visual analysis
-- `CRITICAL`: Severe accessibility barriers
+- `CLAUDE_NEEDED`: Complex issues requiring visual analysis (includes critical pages)
+- ~~`CRITICAL`~~: (Deprecated - now routes to CLAUDE_NEEDED with high priority)
+
+**Examples of Each Category**:
+
+**MINOR_ISSUES** (Auto-fixable):
+- Missing `lang` attribute on `<html>` element
+- Images missing alt text (when decorative)
+- Form inputs missing autocomplete attributes
+- Heading levels skipped (h1 → h3)
+- Document missing `<title>` element
+- Links with non-descriptive text ("click here")
+
+**CLAUDE_NEEDED** (Complex visual/interaction issues):
+- Color contrast failures (needs visual verification)
+- Focus order/keyboard navigation issues
+- Complex ARIA implementation problems
+- Dynamic content accessibility (modals, dropdowns)
+- Visual-only information (charts without text alternatives)
+- Custom UI components with unclear semantics
+
+**CRITICAL** (Severe barriers - now sent to Claude with high priority):
+- Multiple missing form labels (users can't complete forms)
+- No keyboard access to main functionality
+- Missing language declarations causing screen reader failures
+- Completely inaccessible navigation menus
+- Video content without captions
+- Critical ARIA misuse breaking screen readers
+
+**Updated**: Pages with 5+ critical violations are now sent to Claude with `isHighPriority: true` flag, ensuring they receive urgent comprehensive analysis rather than bypassing Claude.
 
 **Input**: Axe-core scan results
 **Output**: Categorized pages with reasoning and confidence scores
@@ -117,6 +145,25 @@ decisionAgent.publish({
   data: { urls: complexPages, reasoning: analysisReasons }
 });
 ```
+
+## Design Update: Critical Pages Now Go to Claude
+
+### Previous Issue (Fixed)
+
+Previously, pages with 5+ critical violations would bypass Claude analysis and go straight to "urgent remediation". This was problematic because these pages would benefit MOST from Claude's analysis.
+
+### Current Implementation
+
+The decision logic has been updated:
+
+1. **Pages with 5+ critical violations** are now categorized as `CLAUDE_NEEDED` with `isHighPriority: true`
+2. **High-priority pages** are processed first by Claude for urgent analysis
+3. **Comprehensive analysis** ensures root causes are identified and systemic fixes are recommended
+4. **Benefits**:
+   - Root cause analysis for systemic problems
+   - Visual context to identify template-wide issues
+   - Comprehensive fix strategies rather than individual patches
+   - Proper prioritization of critical issues by impact
 
 ## Workflow Phases - Step by Step
 

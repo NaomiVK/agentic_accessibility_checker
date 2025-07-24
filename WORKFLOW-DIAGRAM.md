@@ -20,10 +20,11 @@ graph TB
     Categories -->|No issues| Passed["PASSED"]
     Categories -->|Simple fixes| Minor["MINOR ISSUES"]
     Categories -->|Complex| Claude["NEEDS CLAUDE"]
-    Categories -->|Severe| Critical["CRITICAL"]
+    Categories -->|5+ Critical| ClaudeHP["NEEDS CLAUDE<br/>(High Priority)"]
     
     %% Phase 3: Claude Analysis
     Claude --> ClaudeAgent["Claude Analysis<br/>━━━━━━━━━━━━━━━━<br/>Visual Testing<br/>MCP Integration"]
+    ClaudeHP --> ClaudeAgent
     
     ClaudeAgent --> Enhanced["Enhanced Results"]
     
@@ -31,7 +32,6 @@ graph TB
     Passed --> Report
     Minor --> Report
     Enhanced --> Report
-    Critical --> Report
     
     Report["Report Generator<br/>━━━━━━━━━━━━━━━━<br/>Excel, HTML, JSON"]
     
@@ -53,7 +53,7 @@ graph TB
     class Scanner,Decision,ClaudeAgent,Report agent
     class ScanResults,Enhanced,Outputs data
     class Categories decision
-    class Passed,Minor,Claude,Critical output
+    class Passed,Minor,Claude,ClaudeHP output
     class Learning learning
 ```
 
@@ -83,7 +83,7 @@ graph TB
   - PASSED: No issues (skip further analysis)
   - MINOR: Auto-fixable (log for batch processing)
   - CLAUDE_NEEDED: Complex visual/interaction issues
-  - CRITICAL: Severe barriers (flag immediately)
+  - CLAUDE_NEEDED (High Priority): 5+ critical violations needing urgent analysis
 
 ### 4. **Claude Analysis Phase** (Only for complex issues)
 - **Agent**: Claude Analysis Agent
